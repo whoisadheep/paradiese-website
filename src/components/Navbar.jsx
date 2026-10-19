@@ -1,9 +1,11 @@
 import { useState, useCallback, useEffect } from 'react';
 import { Leaf, Menu, X } from 'lucide-react';
+import { useLenis } from 'lenis/react';
 import { navLinks, brandInfo } from '../data/products';
 import { useScrollPosition } from '../hooks/useScrollReveal';
 
 export default function Navbar() {
+  const lenis = useLenis();
   const scrolled = useScrollPosition();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
@@ -31,26 +33,41 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScrollSpy);
   }, []);
 
-  // Lock body scroll when mobile menu is open
+  // Lock body scroll and pause Lenis when mobile menu is open
   useEffect(() => {
     if (mobileOpen) {
+      lenis?.stop();
       document.body.style.overflow = 'hidden';
     } else {
+      lenis?.start();
       document.body.style.overflow = '';
     }
     return () => {
+      lenis?.start();
       document.body.style.overflow = '';
     };
-  }, [mobileOpen]);
+  }, [mobileOpen, lenis]);
 
   const handleNavClick = useCallback((e, href) => {
     e.preventDefault();
     setMobileOpen(false);
+    if (href === '#home') {
+      if (lenis) {
+        lenis.scrollTo(0, { duration: 1.2 });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      return;
+    }
     const target = document.querySelector(href);
     if (target) {
-      target.scrollIntoView({ behavior: 'smooth' });
+      if (lenis) {
+        lenis.scrollTo(target, { offset: -70, duration: 1.2 });
+      } else {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
     }
-  }, []);
+  }, [lenis]);
 
   return (
     <header
@@ -165,7 +182,7 @@ export default function Navbar() {
             </button>
           </div>
 
-          <nav className="flex-1 px-5 py-6 overflow-y-auto">
+          <nav data-lenis-prevent className="flex-1 px-5 py-6 overflow-y-auto">
             <ul className="flex flex-col gap-2" role="list">
               {navLinks.map((link) => (
                 <li key={link.href}>

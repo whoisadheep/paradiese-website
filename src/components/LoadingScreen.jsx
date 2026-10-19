@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Leaf } from 'lucide-react';
+import { useLenis } from 'lenis/react';
 
 const CRITICAL_IMAGES = [
   '/images/brand-logo-hi-res.webp',
@@ -14,11 +15,13 @@ const CRITICAL_IMAGES = [
 ];
 
 export default function LoadingScreen({ onLoaded }) {
+  const lenis = useLenis();
   const [fading, setFading] = useState(false);
   const [removed, setRemoved] = useState(false);
   const [progress, setProgress] = useState(15);
 
   useEffect(() => {
+    lenis?.stop();
     let loadedCount = 0;
     const total = CRITICAL_IMAGES.length;
     const startTime = Date.now();
@@ -33,6 +36,7 @@ export default function LoadingScreen({ onLoaded }) {
         setProgress(100);
         setTimeout(() => {
           setFading(true);
+          lenis?.start();
           onLoaded?.();
           setTimeout(() => {
             setRemoved(true);

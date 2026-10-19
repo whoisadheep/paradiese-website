@@ -1,7 +1,17 @@
 import { ArrowRight, Utensils } from 'lucide-react';
+import { useLenis } from 'lenis/react';
 import { culinaryApplications } from '../data/products';
 
 export default function CulinarySection() {
+  const lenis = useLenis();
+
+  const handleExplore = () => {
+    if (lenis) {
+      lenis.scrollTo('#products', { offset: -60, duration: 1.2 });
+    } else {
+      document.querySelector('#products')?.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
   return (
     <section id="culinary" className="bg-ivory py-14 sm:py-20 md:py-28 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
@@ -60,9 +70,14 @@ export default function CulinarySection() {
 
               <div className="mt-6 pt-4 border-t border-forest/8 flex items-center justify-between text-xs font-medium text-leaf group-hover:text-forest transition-colors">
                 <span>Recommended powders</span>
-                <span className="text-dark/70 font-semibold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={handleExplore}
+                  className="text-dark/70 font-semibold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1 hover:text-forest cursor-pointer"
+                  aria-label={`Explore powders for ${item.name}`}
+                >
                   Explore <ArrowRight size={13} />
-                </span>
+                </button>
               </div>
             </div>
           ))}

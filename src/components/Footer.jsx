@@ -1,15 +1,29 @@
 import { Leaf } from 'lucide-react';
+import { useLenis } from 'lenis/react';
 import { brandInfo, products, navLinks } from '../data/products';
 
-function handleSmoothScroll(e, href) {
-  e.preventDefault();
-  const target = document.querySelector(href);
-  if (target) {
-    target.scrollIntoView({ behavior: 'smooth' });
-  }
-}
-
 export default function Footer() {
+  const lenis = useLenis();
+
+  function handleSmoothScroll(e, href) {
+    e.preventDefault();
+    if (href === '#home') {
+      if (lenis) {
+        lenis.scrollTo(0, { duration: 1.4 });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      return;
+    }
+    const target = document.querySelector(href);
+    if (target) {
+      if (lenis) {
+        lenis.scrollTo(target, { offset: -70, duration: 1.2 });
+      } else {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }
   return (
     <footer className="bg-forest-deep text-cream border-t border-forest-light/40" role="contentinfo">
       <div className="max-w-7xl mx-auto pt-12 sm:pt-16 pb-10 sm:pb-12 px-4 sm:px-6 md:px-8">

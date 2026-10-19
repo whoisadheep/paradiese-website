@@ -1,9 +1,16 @@
 import { ArrowRight, Sparkles, HeartHandshake } from 'lucide-react';
+import { useLenis } from 'lenis/react';
 
 export default function BrandStory() {
+  const lenis = useLenis();
+
   const handleScroll = (e, href) => {
     e.preventDefault();
-    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
+    if (lenis) {
+      lenis.scrollTo(href, { offset: -60, duration: 1.2 });
+    } else {
+      document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (

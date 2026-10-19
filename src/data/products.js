@@ -90,10 +90,10 @@ export const brandInfo = {
   category: 'Natural Dehydrated Food Products & Spice Powders',
   description:
     'Thoughtfully dehydrated ingredients that bring the natural flavour, colour and aroma of real food to your everyday cooking.',
-  email: 'info@paradiese.in',
+  email: 'info@paradiesesundrycrunchy.com',
   phone: '+91 98765 43210',
   whatsapp: '919876543210',
-  website: 'paradiese.in',
+  website: 'paradiesesundrycrunchy.com',
   packagingSizes: ['100 g', '200 g', '500 g', '1 kg'],
 };
 

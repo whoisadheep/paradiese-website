@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { ReactLenis } from 'lenis/react';
 import LoadingScreen from './components/LoadingScreen';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -10,33 +11,47 @@ import QualitySection from './components/QualitySection';
 import CulinarySection from './components/CulinarySection';
 import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
+import BackToTop from './components/BackToTop';
 
 export default function App() {
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   return (
-    <div className="min-h-screen bg-ivory">
-      <LoadingScreen />
-      <Navbar />
-      
-      <main>
-        <Hero />
-        <BenefitsStrip />
-        <ProductGrid onSelectProduct={setSelectedProduct} />
-        <BrandStory />
-        <QualitySection />
-        <CulinarySection />
-        <ContactSection />
-      </main>
-      
-      <Footer />
+    <ReactLenis
+      root
+      options={{
+        lerp: 0.08,
+        duration: 1.2,
+        smoothWheel: true,
+        wheelMultiplier: 1,
+        touchMultiplier: 1.6,
+        infinite: false,
+      }}
+    >
+      <div className="min-h-screen bg-ivory">
+        <LoadingScreen />
+        <Navbar />
+        
+        <main>
+          <Hero />
+          <BenefitsStrip />
+          <ProductGrid onSelectProduct={setSelectedProduct} />
+          <BrandStory />
+          <QualitySection />
+          <CulinarySection />
+          <ContactSection />
+        </main>
+        
+        <Footer />
+        <BackToTop />
 
-      {selectedProduct && (
-        <ProductDetail
-          product={selectedProduct}
-          onClose={() => setSelectedProduct(null)}
-        />
-      )}
-    </div>
+        {selectedProduct && (
+          <ProductDetail
+            product={selectedProduct}
+            onClose={() => setSelectedProduct(null)}
+          />
+        )}
+      </div>
+    </ReactLenis>
   );
 }

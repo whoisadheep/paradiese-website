@@ -15,9 +15,11 @@
   --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* Base styles */
+@import "lenis/dist/lenis.css";
+
+/* Base styles - Lenis handles smooth scrolling with custom easing */
 html {
-  scroll-behavior: smooth;
+  /* scroll-behavior intentionally managed by Lenis to prevent jitter */
 }
 
 @media (prefers-reduced-motion: reduce) {

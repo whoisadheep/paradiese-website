@@ -1,14 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
-import { X, Package, ArrowRight, MessageCircle, Mail, Sparkles, Check } from 'lucide-react';
+import { X, Package, ArrowRight, MessageCircle, Mail, Sparkles, Check, Share2 } from 'lucide-react';
+import { useLenis } from 'lenis/react';
 import { brandInfo } from '../data/products';
 
 export default function ProductDetail({ product, onClose }) {
+  const lenis = useLenis();
   const overlayRef = useRef(null);
   const [selectedSize, setSelectedSize] = useState(product?.sizes?.[0] || '100 g');
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    // Prevent body scroll when modal is open
+    // Prevent body scroll and pause Lenis when modal is open
+    lenis?.stop();
     document.body.style.overflow = 'hidden';
 
     const handleKeyDown = (e) => {
@@ -18,10 +21,11 @@ export default function ProductDetail({ product, onClose }) {
     window.addEventListener('keydown', handleKeyDown);
 
     return () => {
+      lenis?.start();
       document.body.style.overflow = '';
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [onClose]);
+  }, [onClose, lenis]);
 
   if (!product) return null;
 
@@ -29,9 +33,20 @@ export default function ProductDetail({ product, onClose }) {
     if (e.target === overlayRef.current) onClose();
   };
 
+  const handleCopyLink = () => {
+    const shareUrl = `https://paradiesesundrycrunchy.com/#products`;
+    navigator.clipboard?.writeText?.(shareUrl).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2200);
+    }).catch(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2200);
+    });
+  };
+
   const handleEnquire = (method) => {
     const text = encodeURIComponent(
-      `Hello Paradiese, I am interested in inquiring about ${product.name} (${selectedSize} pack).`
+      `Hello Paradiese, I am interested in inquiring about ${product.name} (${selectedSize} pack) via paradiesesundrycrunchy.com.`
     );
     if (method === 'whatsapp') {
       window.open(`https://wa.me/${brandInfo.whatsapp}?text=${text}`, '_blank');
@@ -49,7 +64,10 @@ export default function ProductDetail({ product, onClose }) {
       aria-modal="true"
       aria-labelledby="modal-product-title"
     >
-      <div className="bg-ivory rounded-2xl sm:rounded-3xl max-w-4xl w-full max-h-[95vh] sm:max-h-[92vh] overflow-y-auto shadow-2xl border border-cream flex flex-col relative animate-scale-up">
+      <div
+        data-lenis-prevent
+        className="bg-ivory rounded-2xl sm:rounded-3xl max-w-4xl w-full max-h-[95vh] sm:max-h-[92vh] overflow-y-auto shadow-2xl border border-cream flex flex-col relative animate-scale-up"
+      >
         {/* Sticky Close Button */}
         <div className="sticky top-0 z-20 flex justify-end p-4 bg-gradient-to-b from-ivory via-ivory/90 to-transparent pointer-events-none">
           <button
@@ -178,7 +196,33 @@ export default function ProductDetail({ product, onClose }) {
                 </button>
               </div>
 
-              <p className="text-[11px] text-muted text-center mt-3">
+              {/* Share / Copy link */}
+              <div className="mt-3 flex items-center justify-center">
+                <button
+                  type="button"
+                  onClick={handleCopyLink}
+                  className={`inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full transition-all duration-200 ${
+                    copied
+                      ? 'bg-leaf/15 text-forest font-semibold'
+                      : 'text-dark/65 hover:text-forest hover:bg-cream/80'
+                  }`}
+                  aria-label="Copy product share link"
+                >
+                  {copied ? (
+                    <>
+                      <Check size={13} className="text-leaf" />
+                      Link copied to clipboard!
+                    </>
+                  ) : (
+                    <>
+                      <Share2 size={13} />
+                      Share / Copy product link
+                    </>
+                  )}
+                </button>
+              </div>
+
+              <p className="text-[11px] text-muted text-center mt-2.5">
                 Wholesale & retail enquiries welcome. Direct factory dispatch.
               </p>
             </div>

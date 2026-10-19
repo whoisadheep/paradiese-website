@@ -1,11 +1,18 @@
 import { Leaf, ArrowRight } from 'lucide-react';
+import { useLenis } from 'lenis/react';
 
 export default function Hero() {
+  const lenis = useLenis();
+
   const handleClick = (e, href) => {
     e.preventDefault();
     const target = document.querySelector(href);
     if (target) {
-      target.scrollIntoView({ behavior: 'smooth' });
+      if (lenis) {
+        lenis.scrollTo(target, { offset: -60, duration: 1.2 });
+      } else {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   };
 

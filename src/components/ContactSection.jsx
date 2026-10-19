@@ -74,7 +74,7 @@ export default function ContactSection() {
           </div>
 
           <p className="text-xs text-muted/80 mt-6">
-            Website: <span className="font-semibold text-forest">{brandInfo.website}</span> • Brand: PARADIESE SUNDRY CRUNCHY
+            Website: <a href={`https://${brandInfo.website}`} target="_blank" rel="noopener noreferrer" className="font-semibold text-forest underline hover:text-forest-deep transition-colors">{brandInfo.website}</a> • Brand: PARADIESE SUNDRY CRUNCHY
           </p>
         </div>
       </div>
