@@ -8,9 +8,9 @@ const CRITICAL_IMAGES = [
   '/images/products/tomato-showcase.webp',
   '/images/products/ginger-showcase.webp',
   '/images/products/red-chilli-showcase.webp',
-  '/images/products/onion-showcase.webp',
-  '/images/products/garlic-showcase.webp',
-  '/images/products/kashmiri-chilli-showcase.webp',
+  '/images/products/amla-showcase.webp',
+  '/images/products/banana-showcase.webp',
+  '/images/products/moringa-showcase.webp',
   '/images/products/dehydrated-fruits.webp',
 ];
 
